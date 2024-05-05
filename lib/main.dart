@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storeapp/cubit/favourite_items_cubit.dart';
+import 'package:storeapp/cubitFavourite/favourite_items_cubit.dart';
 import 'package:storeapp/cubitGetAllCategories/get_all_categories_cubit.dart';
 import 'package:storeapp/cubitGetAllProducts/get_all_product_cubit.dart';
 import 'package:storeapp/cubitGetItemsCategories/get_items_categories_cubit.dart';
@@ -34,7 +34,6 @@ void main() {
 class StoreApp extends StatelessWidget {
   const StoreApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

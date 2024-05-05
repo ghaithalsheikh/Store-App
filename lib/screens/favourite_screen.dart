@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storeapp/cubit/favourite_items_cubit.dart';
-import 'package:storeapp/widgets/custom_card.dart';
+import 'package:storeapp/cubitFavourite/favourite_items_cubit.dart';
+import 'package:storeapp/widgets/custom_card_favourite.dart';
 
 class FavouriteScreen extends StatelessWidget {
   static String id = 'Favourite screen';
@@ -29,7 +29,7 @@ class FavouriteScreen extends StatelessWidget {
                     final product = state.favouriteProduct[index];
                     return Padding(
                       padding: const EdgeInsets.all(40.0),
-                      child: CustomCard(
+                      child: CustomCardFavourite(
                         product: product,
                         icon: IconButton(
                             onPressed: () {
@@ -53,7 +53,7 @@ class FavouriteScreen extends StatelessWidget {
                     final product = state.favouriteProduct![index];
                     return Padding(
                       padding: const EdgeInsets.all(40.0),
-                      child: CustomCard(
+                      child: CustomCardFavourite(
                         product: product,
                         icon: IconButton(
                             onPressed: () {

@@ -5,7 +5,6 @@ import 'package:storeapp/services/update_product.dart';
 import 'package:storeapp/widgets/custom_button.dart';
 import 'package:storeapp/widgets/custom_textfeild.dart';
 
-// ignore: must_be_immutable
 class UpdateProductScreen extends StatefulWidget {
   const UpdateProductScreen({super.key});
   static String id = 'update product';

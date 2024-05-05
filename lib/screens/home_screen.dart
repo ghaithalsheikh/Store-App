@@ -6,7 +6,6 @@ import 'package:storeapp/screens/add_product_screen.dart';
 import 'package:storeapp/screens/favourite_screen.dart';
 import 'package:storeapp/widgets/custom_card.dart';
 
-// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   static String id = 'HomeScreen';
@@ -41,18 +40,19 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is GetAllProductLoaded) {
               return GridView.builder(
-                  clipBehavior: Clip.none,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 1.5,
-                      mainAxisSpacing: 80),
-                  itemCount: state.products.length,
-                  itemBuilder: ((context, index) {
-                    return CustomCard(
-                      product: state.products[index],
-                    );
-                  }));
+                clipBehavior: Clip.none,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1.5,
+                    mainAxisSpacing: 80),
+                itemCount: state.products.length,
+                itemBuilder: ((context, index) {
+                  return CustomCard(
+                    product: state.products[index],
+                  );
+                }),
+              );
             }
             return const SizedBox();
           },
