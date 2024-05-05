@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storeapp/cubit/favourite_items_cubit.dart';
 import 'package:storeapp/models/product_model.dart';
 import 'package:storeapp/screens/update_product_screen.dart';
 
-List<ProductModel> productfav = [];
+// List<ProductModel> productfav = [];
 
 class CustomCard extends StatefulWidget {
   const CustomCard({super.key, required this.product, this.icon});
@@ -63,8 +65,10 @@ class _CustomCardState extends State<CustomCard> {
                                     icon: const Icon(
                                         Icons.favorite_border_outlined),
                                     onPressed: () {
+                                      BlocProvider.of<FavouriteItemsCubit>(
+                                              context)
+                                          .addItemToFaourite(widget.product);
                                       setState(() {
-                                        productfav.add(widget.product);
                                         changeicon = false;
                                       });
                                     },
@@ -73,8 +77,10 @@ class _CustomCardState extends State<CustomCard> {
                                 : IconButton(
                                     icon: const Icon(Icons.favorite),
                                     onPressed: () {
+                                      BlocProvider.of<FavouriteItemsCubit>(
+                                              context)
+                                          .removeItemToFaourite(widget.product);
                                       setState(() {
-                                        productfav.remove(widget.product);
                                         changeicon = true;
                                       });
                                     },

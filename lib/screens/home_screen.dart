@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:storeapp/models/product_model.dart';
+import 'package:storeapp/cubitGetAllProducts/get_all_product_cubit.dart';
 import 'package:storeapp/screens/add_product_screen.dart';
 import 'package:storeapp/screens/favourite_screen.dart';
-import 'package:storeapp/services/get_all_product.dart';
 import 'package:storeapp/widgets/custom_card.dart';
 
 // ignore: must_be_immutable
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   static String id = 'HomeScreen';
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: true,
@@ -41,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 70),
-        child: FutureBuilder<List<ProductModel>>(
-          future: AllProductService().getallproduct(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<ProductModel> products = snapshot.data!;
+        child: BlocBuilder<GetAllProductCubit, GetAllProductState>(
+          builder: (context, state) {
+            if (state is GetAllProductLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is GetAllProductLoaded) {
               return GridView.builder(
                   clipBehavior: Clip.none,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,15 +47,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisSpacing: 10,
                       childAspectRatio: 1.5,
                       mainAxisSpacing: 80),
-                  itemCount: products.length,
+                  itemCount: state.products.length,
                   itemBuilder: ((context, index) {
                     return CustomCard(
-                      product: products[index],
+                      product: state.products[index],
                     );
                   }));
-            } else {
-              return const Center(child: CircularProgressIndicator());
             }
+            return const SizedBox();
           },
         ),
       ),

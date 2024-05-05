@@ -24,10 +24,12 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   String? image;
 
   bool isLodaing = false;
+  ProductModel? product2;
   @override
   Widget build(BuildContext context) {
     ProductModel product =
         ModalRoute.of(context)!.settings.arguments as ProductModel;
+    product2 = product;
     TextEditingController controller = TextEditingController();
 
     return ModalProgressHUD(
@@ -48,7 +50,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
             child: Column(
               children: [
                 Customtextfeild(
-                  hintext: 'Product Name',
+                  hintext: '${product2!.title}',
                   onChanged: (data) {
                     productName = data;
                   },
@@ -57,7 +59,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                   height: 15,
                 ),
                 Customtextfeild(
-                  hintext: 'discription',
+                  hintext: '${product2!.description}',
                   onChanged: (data) {
                     description = data;
                   },
@@ -66,7 +68,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                   height: 15,
                 ),
                 Customtextfeild(
-                    hintext: 'price',
+                    hintext: '${product2!.price}',
                     inputType: TextInputType.number,
                     onChanged: (data) {
                       price = data;
@@ -75,7 +77,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                   height: 15,
                 ),
                 Customtextfeild(
-                  hintext: 'image',
+                  hintext: '${product2!.image}',
                   onChanged: (data) {
                     image = data;
                   },
@@ -89,7 +91,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     isLodaing = true;
                     setState(() {});
                     try {
-                      await updateProduct(product);
+                      await updateProduct();
                       print('Succses');
                     } catch (e) {
                       print(e.toString());
@@ -108,13 +110,13 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     );
   }
 
-  Future<void> updateProduct(ProductModel product) async {
+  Future<void> updateProduct() async {
     await UpdateProductService().updateProduct(
-        id: product.id,
-        title: productName == null ? product.title : productName!,
-        price: price == null ? product.price.toString() : price!,
-        description: description == null ? product.description : description!,
-        image: image == null ? product.image : image!,
-        category: product.category);
+        id: product2!.id,
+        title: productName == null ? product2!.title : productName!,
+        price: price == null ? product2!.price.toString() : price!,
+        description: description == null ? product2!.description : description!,
+        image: image == null ? product2!.image : image!,
+        category: product2!.category);
   }
 }

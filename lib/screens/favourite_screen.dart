@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storeapp/cubit/favourite_items_cubit.dart';
 import 'package:storeapp/widgets/custom_card.dart';
 
-// ignore: must_be_immutable
-class FavouriteScreen extends StatefulWidget {
+class FavouriteScreen extends StatelessWidget {
   static String id = 'Favourite screen';
 
   const FavouriteScreen({super.key});
 
-  @override
-  State<FavouriteScreen> createState() => _FavouriteScreenState();
-}
-
-class _FavouriteScreenState extends State<FavouriteScreen> {
-  bool isShow = false;
+  // bool isShow = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,38 +18,66 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           centerTitle: true,
           backgroundColor: Colors.teal[100],
         ),
-        body: productfav.isNotEmpty
-            ? Padding(
+        body: BlocBuilder<FavouriteItemsCubit, FavouriteItemsState>(
+          builder: (context, state) {
+            if (state is FavouriteItemsAdd) {
+              return Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: ListView.builder(
-                  itemCount: productfav.length,
+                  itemCount: state.favouriteProduct.length,
                   itemBuilder: (context, index) {
-                    final product = productfav[index];
+                    final product = state.favouriteProduct[index];
                     return Padding(
-                        padding: const EdgeInsets.all(40.0),
-                        child: CustomCard(
-                          product: product,
-                          icon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  productfav
-                                      .removeWhere((item) => item == product);
-                                });
-                              },
-                              icon: const Icon(Icons.remove_circle)),
-                        ));
+                      padding: const EdgeInsets.all(40.0),
+                      child: CustomCard(
+                        product: product,
+                        icon: IconButton(
+                            onPressed: () {
+                              BlocProvider.of<FavouriteItemsCubit>(context)
+                                  .removeItemToFaourite(product);
+                            },
+                            icon: const Icon(Icons.remove_circle)),
+                      ),
+                    );
                   },
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  child: const Text(
-                    'your cart is empty',
-                    style: TextStyle(fontSize: 18),
-                  ),
+              );
+            } else if (state is FavouriteItemsRemove &&
+                state.favouriteProduct!.isNotEmpty) {
+              print('inside remove');
+              return Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: ListView.builder(
+                  itemCount: state.favouriteProduct!.length,
+                  itemBuilder: (context, index) {
+                    final product = state.favouriteProduct![index];
+                    return Padding(
+                      padding: const EdgeInsets.all(40.0),
+                      child: CustomCard(
+                        product: product,
+                        icon: IconButton(
+                            onPressed: () {
+                              BlocProvider.of<FavouriteItemsCubit>(context)
+                                  .removeItemToFaourite(product);
+                            },
+                            icon: const Icon(Icons.remove_circle)),
+                      ),
+                    );
+                  },
                 ),
-              ));
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: const Text(
+                  'your cart is empty',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ));
   }
 }
